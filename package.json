@@ -1,0 +1,70 @@
+{
+  "name": "bookshop",
+  "version": "1.0.0",
+  "description": "A simple CAP project.",
+  "repository": "<Add your repository here>",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@cap-js/hana": "^1",
+    "@sap/cds": "^8",
+    "@sap/cds-mtxs": "^2.0.5",
+    "express": "^4",
+    "@sap/xssec": "^4"
+  },
+  "devDependencies": {
+    "@cap-js/cds-types": "^0.6",
+    "@cap-js/sqlite": "^1",
+    "@sap/cds-dk": "^8",
+    "@sap/ux-specification": "^1.120.16"
+  },
+  "scripts": {
+    "start": "cds-serve",
+    "watch-admin": "cds watch --open admin/webapp/index.html?sap-ui-xx-viewCache=false"
+  },
+  "cds": {
+    "profile": "with-mtx-sidecar",
+    "requires": {
+      "[dev]": {
+        "db": {
+          "kind": "sqlite",
+          "credentials": {
+            "url": "db.sqlite"
+          }
+        },
+        "multitenancy": true,
+        "extensibility": false,
+        "toggles": false,
+        "auth": {
+          "kind": "mocked",
+          "users": {
+            "johan.gaitan@mqa-bc.com": {
+              "tenant": "t1",
+              "password": "12345",
+              "roles": [
+                "cds.Subscriber",
+                "mtcallback",
+                "internal-user"
+              ]
+            }
+          }
+        }
+      },
+      "[production]": {
+        "db": "hana",
+        "multitenancy": true,
+        "extensibility": true,
+        "toggles": true,
+        "auth": "xsuaa"
+      },
+      "[local-multitenancy]": {
+        "multitenancy": true
+      },
+      "html5-repo": true,
+      "portal": false
+    }
+  },
+  "sapux": [
+    "app/admin"
+  ]
+}
